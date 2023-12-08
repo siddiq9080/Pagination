@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagination</title>
+
+  <script
+  src="https://app.zenclass.in/sheets/v1/js/zen/suite/bundle.js"
+  defer
+></script>
+
+
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .pagination {
+      display: flex;
+      list-style: none;
+      padding: 0;
+    }
+
+    .pagination-item {
+      margin: 0 5px;
+    }
+
+    .pagination-link {
+      display: block;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #333;
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    .pagination-link:hover {
+      background-color: #ddd;
+    }
+
+    .pagination-link.active {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .pagination-prev, .pagination-next {
+   
+      margin: 0 5px;
+    }
+
+    h1,p{
+        font-size: 10px;
+    }
+  </style>
+
+
+</head>
+<body>
+<!-- Test suite start-->
+
+<h1 id="title">Pagination</h1>
+<p id="description">Practice</p> <br/>
+<div class="table-responsive">
+  <table class="table" id="table">
+    <thead>
+      <tr>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+<div id="buttons" class="d-flex justify-content-center"></div>
+
+<!-- Test suite end-->
+
+
+   
+  <div id="paginationContainer"></div>
+
+  <script>
+    // Change this value based on your actual number of pages
+    const totalPages = 15; 
+
+    // Change this value based on the current active page
+     let currentPage = 1; 
+
+    function createPagination() {
+      const paginationContainer = document.getElementById('paginationContainer');
+      const paginationList = document.createElement('ul');
+      paginationList.classList.add('pagination');
+
+      // Previous Button
+      const prevButton = createPaginationItem('Previous', 'pagination-prev');
+      prevButton.addEventListener('click', () => handlePageChange(currentPage - 1));
+      paginationList.appendChild(prevButton);
+
+      // Numbered Links
+      for (let i = 1; i <= totalPages; i++) {
+        const paginationItem = createPaginationItem(i);
+        paginationItem.addEventListener('click', () => handlePageChange(i));
+        paginationList.appendChild(paginationItem);
+      }
+
+      // Next Button
+      const nextButton = createPaginationItem('Next', 'pagination-next');
+      nextButton.addEventListener('click', () => handlePageChange(currentPage + 1));
+      paginationList.appendChild(nextButton);
+
+      paginationContainer.appendChild(paginationList);
+    }
+
+    function createPaginationItem(content, className) 
+    {
+      const paginationItem = document.createElement('li');
+      paginationItem.classList.add('pagination-item');
+
+      const paginationLink = document.createElement('a');
+      paginationLink.classList.add('pagination-link');
+      if (className) {
+        paginationLink.classList.add(className);
+      }
+
+      // Add your page URL here
+      paginationLink.href = '#'; 
+      paginationLink.textContent = content;
+
+      paginationItem.appendChild(paginationLink);
+      return paginationItem;
+    }
+
+    function handlePageChange(newPage)
+     {
+      if (newPage >= 1 && newPage <= totalPages) {
+        currentPage = newPage;
+        updatePagination();
+      }
+    }
+
+    function updatePagination() 
+    {
+      const paginationItems = document.querySelectorAll('.pagination-item');
+      paginationItems.forEach((item, index) => {
+        const paginationLink = item.querySelector('.pagination-link');
+        if (index === 0) 
+        {
+          paginationLink.textContent = 'Previous';
+        }
+         else if
+          (index === paginationItems.length - 1)
+           {
+          paginationLink.textContent = 'Next';
+        }
+         else 
+         {
+          const pageNumber = index;
+          paginationLink.textContent = pageNumber;
+          paginationLink.classList.toggle('active', pageNumber === currentPage);
+        }
+      });
+    }
+
+    createPagination();
+  </script>
+
+
+</body>
+</html>
